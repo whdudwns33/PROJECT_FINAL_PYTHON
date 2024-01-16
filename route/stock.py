@@ -7,7 +7,7 @@ import os
 
 
 # 날짜 범위 설정
-start = "20231201"
+start = "20231230"
 end = "20231231"
 
 # 데이터를 저장할 빈 DataFrame 생성

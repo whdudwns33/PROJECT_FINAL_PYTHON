@@ -5,3 +5,6 @@ data/
 logs/
 
 __pycache__/
+
+# test 는 개인용
+test.py
