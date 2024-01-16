@@ -27,3 +27,4 @@ res = []
 for td in td_list :
     dic = {"name": td[0], "TbRate": td[1], "buy": td[2], "sell": td[3], "send": td[4], "receive": td[5], "exchange": td[6]}
     res.append(dic)
+# print(res)
