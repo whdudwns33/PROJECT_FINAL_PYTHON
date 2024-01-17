@@ -12,12 +12,12 @@ tr_list = tbody.find_all("tr")
 
 td_list = []
 for tr in tr_list :
-    text = [td.text.split() for td in tr.find_all("td")]
+    text = [td.text.strip() for td in tr.find_all("td")]
     td_list.append(text)
 
-
-# 수정 필요
 dic_list = []
-for td in td_list:
-    dic = {"name" : td[0][0] , "unit": td[1][0] + td[1][1], "price": td[2], "yesterday": td[3], "rate": td[4], "date": td[5]}
-    print(dic)
+for data in td_list:
+    dic = {"name": data[0], "unit": data[1], "price": data[2], "yesterday": data[3], "rate": data[4], "date": data[5]}
+    dic_list.append(dic)
+
+print(dic_list)
