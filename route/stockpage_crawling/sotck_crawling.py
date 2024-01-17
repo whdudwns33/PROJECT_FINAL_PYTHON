@@ -2,6 +2,9 @@ import requests
 from bs4 import BeautifulSoup
 import json
 
+
+
+
 # 거래 상위
 url = "https://finance.naver.com/"
 response = requests.get(url)
