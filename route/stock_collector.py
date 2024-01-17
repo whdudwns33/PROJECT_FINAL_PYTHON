@@ -3,17 +3,10 @@ from datetime import datetime
 from calendar import monthrange
 import pandas as pd
 import os
-import logging
+from common.logger_config import config_logger
 
-
-
-# 로깅 설정
-log_folder = 'logs'
-os.makedirs(log_folder, exist_ok=True)
-log_file = os.path.join(log_folder, 'app.log')
-logging.basicConfig(filename=log_file, level=logging.INFO,
-                    format='%(asctime)s - %(levelname)s - %(message)s')
-
+# 로거 설정
+logger = config_logger('logs/app.log')
 
 def get_years_months_between_dates(past_date):
     current_date = datetime.now()
@@ -60,11 +53,12 @@ def make_stock_csv_file(start, end, folder_path):
         df = pd.concat([df, merged_data.reset_index(drop=True)], ignore_index=True)
 
     stock_file = os.path.join(folder_path, "stock.csv")
+    # df.to_csv(stock_file, encoding='utf-8-sig', index=True)  # utf-8-sig는 엑셀에서 한글 깨짐 방지
     try:
         df.to_csv(stock_file, encoding='utf-8-sig', index=True)  # utf-8-sig는 엑셀에서 한글 깨짐 방지
-        logging.info(f'"{stock_file}" 파일이 성공적으로 저장되었습니다.')
+        logger.info(f'"{stock_file}" 파일이 성공적으로 저장되었습니다.')
     except Exception as e:
-        logging.error(f"make_stock_csv_file => df.to_csv() 에러 : {e}")
+        logger.info(f"make_stock_csv_file => df.to_csv() 에러 : {e}")
 
 def create_stock_files(start_date_str):
     # Convert the date string to a datetime object
@@ -82,4 +76,4 @@ def create_stock_files(start_date_str):
             first_date, last_date = get_first_and_last_day(year, month)
             make_stock_csv_file(first_date.strftime('%Y%m%d'), last_date.strftime('%Y%m%d'), folder_path)
         else:
-            logging.info(f'"{stock_path}" 파일이 이미 존재합니다.')
+            logger.info(f'"{stock_path}" 파일이 이미 존재합니다.')
