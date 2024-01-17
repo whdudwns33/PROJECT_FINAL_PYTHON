@@ -13,4 +13,4 @@ test.py
 # etc
 __pycache__/
 .DS_Store
-.idea/
+#.idea/
