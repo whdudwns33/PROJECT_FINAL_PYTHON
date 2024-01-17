@@ -12,8 +12,9 @@ ticker = input()
 # 함수식으로 선언할 때, 아래 함수 활성화
 # def lstm_predict(ticker) :
 # 폴더 내의 모든 csv파일 목록을 불러온다
-file_names = glob("data/*/*/*.csv")
 
+file_names = glob("../data/*/*/stock.csv")
+# print(file_names)
 
 # df_all을 데이터프레임으로 초기화
 df_all = pd.DataFrame()
@@ -29,10 +30,10 @@ data = df_all['종가'].values.reshape(-1, 1)
 # print("data",data)
 
 # 데이터의 총 수 - 1 : 현제 기(term)에서 몇 전기 까지 볼껀지
-# 0.84가 가장 적절한 수준인듯
+# 0.88가 가장 적절한 수준인듯
 length = int(len(data) * 0.88)
 # length = 180
-print("length",length)
+# print("length",length)
 
 
 # 데이터 정규화
