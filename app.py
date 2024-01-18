@@ -22,6 +22,18 @@ app = Flask(__name__)
 app.config.from_object(Config)
 CORS(app, origins=['http://localhost:8111'])
 
+# 파이썬 크롤링
+app.add_url_rule('/python/stock', '/python/stock', stock_crawling, methods=['GET'])
+app.add_url_rule('/python/exchange', '/python/exchange', exchange_crawling, methods=['GET'])
+app.add_url_rule('/python/exchangeMarket', '/python/exchangeMarket', exchange_market_crawling, methods=['GET'])
+app.add_url_rule('/python/energy', '/python/energy', energy_crawling, methods=['GET'])
+app.add_url_rule('/python/arg', '/python/arg', arg_crawling, methods=['GET'])
+app.add_url_rule('/python/gold', '/python/gold', gold_crawling, methods=['GET'])
+app.add_url_rule('/python/metal', '/python/metal', metal_crawling, methods=['GET'])
+app.add_url_rule('/python/oil', '/python/oil', oil_crawling, methods=['GET'])
+
+
+
 scheduler = APScheduler()  # 스케줄러 초기화
 scheduler.init_app(app)  # 스케줄러 초기화
 
@@ -46,6 +58,8 @@ scheduler.add_job(
     max_instances=1,
     args=["data/", "hashes/"]  # 다른 작업에 필요한 매개변수 전달
 )
+
+
 
 
 if __name__ == '__main__':

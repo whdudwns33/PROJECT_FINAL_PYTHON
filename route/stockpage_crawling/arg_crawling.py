@@ -19,7 +19,7 @@ def arg_crawling():
 
     dic_list = []
     for res in td_list:
-        dic = {"name": res[0], "month": res[1], "units": res[2], "price": res[3], "yesterday": res[4], "rate": res[5], "date": res[6], "": res[7]}
+        dic = {"name": res[0], "month": res[1], "units": res[2], "price": res[3], "yesterday": res[4], "rate": res[5], "date": res[6], "exchange": res[7]}
         dic_list.append(dic)
 
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)

@@ -31,5 +31,6 @@ def exchange_market_crawling():
         dic_list.append(dic)
 
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)
+    # print("환율 시장 가격",res)
     return res
 

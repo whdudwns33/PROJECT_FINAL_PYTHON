@@ -20,7 +20,7 @@ def metal_crawling():
 
     dic_list = []
     for res in td_list:
-        dic = {"name": res[0],  "units": res[1], "price": res[2], "yesterday": res[3], "rate": res[4], "date": res[5], "": res[6]}
+        dic = {"name": res[0],  "units": res[1], "price": res[2], "yesterday": res[3], "rate": res[4], "date": res[5], "exchange": res[6]}
         dic_list.append(dic)
 
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)

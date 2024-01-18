@@ -29,7 +29,7 @@ def exchange_crawling():
     for td in td_list :
         dic = {"name": td[0], "TbRate": td[1], "buy": td[2], "sell": td[3], "send": td[4], "receive": td[5], "exchange": td[6]}
         dic_list.append(dic)
-    # print(res)
 
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)
+    # print("환율 가격",res)
     return res
