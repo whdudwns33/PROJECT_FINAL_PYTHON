@@ -1,6 +1,7 @@
 from common.logger_config import config_logger
 import hashlib
 import os
+from route.post_stock_to_controller import post_json
 
 # 로거 설정
 # 'logs/app.log' 파일에 로그를 기록하는 로거를 설정
@@ -62,6 +63,7 @@ def check_all_csv_files(directory_path, hashes_directory):
                 if last_hash is None or current_hash != last_hash:
                     logger.info(f"hash값이 변경되었습니다! 스프링 부트에 JSON 데이터를 보냅니다... ({file_path})")
                     # 여기에 Spring Boot에 데이터를 전송하는 코드를 추가할 수 있습니다.
+                    # post_json(file_path)
 
                     # 해시 파일을 업데이트합니다.
                     save_hash_to_file(hash_file_path, current_hash)

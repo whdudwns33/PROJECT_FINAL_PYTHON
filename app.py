@@ -46,7 +46,7 @@ scheduler.add_job(
     # hour='*/1',
     id="get_stock_files",
     max_instances=1,
-    args=["20200101"]  # 여기에 원하는 날짜 범위를 설정
+    args=["20220101"]  # 여기에 원하는 날짜 범위를 설정
 )
 
 # 1분 간격으로 csv파일 내용 변경 체크
