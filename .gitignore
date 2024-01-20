@@ -1,6 +1,9 @@
 # data 디렉토리와 하위 모든 파일/폴더 추적 안 함
 data/
 
+# news data
+news_data/
+
 # logs 디렉토리와 하위 모든 파일/폴더 추적 안 함
 logs/
 

@@ -12,6 +12,7 @@ from route.stockpage_crawling.sotck_crawling import stock_crawling
 from route.stockpage_crawling.exchange_market_rate_crawling import exchange_market_crawling
 from route.stockpage_crawling.exchange_rate_crawling import exchange_crawling
 from route.stockpage_crawling.oil_price_crawling import oil_crawling
+from route.news import get_news
 import os
 
 
@@ -31,6 +32,8 @@ app.add_url_rule('/python/arg', '/python/arg', arg_crawling, methods=['GET'])
 app.add_url_rule('/python/gold', '/python/gold', gold_crawling, methods=['GET'])
 app.add_url_rule('/python/metal', '/python/metal', metal_crawling, methods=['GET'])
 app.add_url_rule('/python/oil', '/python/oil', oil_crawling, methods=['GET'])
+# # 임시 뉴스
+# app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 
 
 
@@ -57,6 +60,17 @@ scheduler.add_job(
     id="check_stock_files",
     max_instances=1,
     args=["data/", "hashes/"]  # 다른 작업에 필요한 매개변수 전달
+)
+
+# 24시간 간격으로 엘라스틱에 데이터 저장
+scheduler.add_job(
+    func=get_news,
+    trigger="cron",
+    minute='*/1',
+    # hour='*/24',
+    id="get_news",
+    max_instances=1,
+    args=[]
 )
 
 
