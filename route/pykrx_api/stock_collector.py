@@ -53,6 +53,9 @@ def make_stock_csv_file(start, end, folder_path):
         # '티커' 컬럼을 일반적인 열로 유지하고, 독립적인 순차적인 인덱스를 사용
         df = pd.concat([df, merged_data.reset_index(drop=True)], ignore_index=True)
 
+    # 중복된 데이터 체크 후 중복 제거
+    df = df.drop_duplicates()
+
     stock_file = os.path.join(folder_path, "stock.csv")
     try:
         df.to_csv(stock_file, encoding='utf-8-sig', index=True)  # utf-8-sig는 엑셀에서 한글 깨짐 방지

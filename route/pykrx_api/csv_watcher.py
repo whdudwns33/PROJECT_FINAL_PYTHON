@@ -1,7 +1,7 @@
 from common.logger_config import config_logger
 import hashlib
 import os
-from route.post_stock_to_controller import post_json
+from route.pykrx_api.post_stock_to_controller import post_json
 
 # 로거 설정
 # 'logs/app.log' 파일에 로그를 기록하는 로거를 설정

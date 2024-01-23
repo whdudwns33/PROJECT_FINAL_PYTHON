@@ -22,8 +22,6 @@ def csv_to_json(csv_file_path):
         # 빈 키를 제외하고 새로운 딕셔너리 리스트 생성
         modified_data_list = [{k: v for k, v in row.items() if k != ""} for row in data_list]
 
-        # print(modified_data_list)
-
         data = json.dumps(modified_data_list, ensure_ascii=False, indent=2)
         return data
 
@@ -37,9 +35,9 @@ def post_json(csv_file_path):
         http_post_request = requests.post(url, data=data.encode('utf-8'), headers={'Content-Type': 'application/json'})
         if http_post_request.status_code == 200:
             logger.info("POST 요청 성공")
-            print(http_post_request.text)  # 서버에서 보낸 응답 확인
+            # print(http_post_request.text)  # 서버에서 보낸 응답 확인
         else:
             logger.error(f"POST 요청 실패. 응답 코드: {http_post_request.status_code}")
-            print(http_post_request.text)  # 실패 시 에러 메시지 확인
+            # print(http_post_request.text)  # 실패 시 에러 메시지 확인
     except requests.exceptions.ConnectionError as e:
         logger.error(f"ConnectionError: {e}")
