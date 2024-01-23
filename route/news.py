@@ -5,6 +5,7 @@ import urllib.request
 import csv
 from glob import glob
 import requests
+from common.constant import SPRING_BOOT_DOMAIN
 def collect_news_to_csv():
     client_id = "73M8oVppQg4z20jwcfdY"
     client_secret = "dY8gYRoFso"
@@ -65,7 +66,7 @@ def get_news():
     # 데이터 수집
     collect_news_to_csv()
     
-    url = "http://localhost:8111/news/save"
+    url = f"{SPRING_BOOT_DOMAIN}/news/save"
     all_news = []
     file_names = glob("../news_data/*/*/*.csv")
     for file_name in file_names:

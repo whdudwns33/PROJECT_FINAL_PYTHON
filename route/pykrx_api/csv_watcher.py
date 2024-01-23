@@ -2,10 +2,11 @@ from common.logger_config import config_logger
 import hashlib
 import os
 from route.pykrx_api.post_stock_to_controller import post_json
+from common.constant import LOGGER_PATH
 
 # 로거 설정
 # 'logs/app.log' 파일에 로그를 기록하는 로거를 설정
-logger = config_logger('logs/app.log')
+logger = config_logger(LOGGER_PATH)
 
 
 # 주어진 파일의 해시값(MD5)을 계산하여 반환하는 함수

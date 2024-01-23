@@ -13,6 +13,7 @@ from route.stockpage_crawling.exchange_market_rate_crawling import exchange_mark
 from route.stockpage_crawling.exchange_rate_crawling import exchange_crawling
 from route.stockpage_crawling.oil_price_crawling import oil_crawling
 from route.news import get_news
+from common.constant import DATA_SAVE_PATH, HASH_SAVE_PATH, SPRING_BOOT_DOMAIN
 import os
 
 
@@ -21,7 +22,7 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
-CORS(app, origins=['http://localhost:8111'])
+CORS(app, origins=[f"{SPRING_BOOT_DOMAIN}"])
 
 # 파이썬 크롤링
 app.add_url_rule('/python/stock', '/python/stock', stock_crawling, methods=['GET'])
@@ -59,7 +60,7 @@ scheduler.add_job(
     minute='*/1',
     id="check_stock_files",
     max_instances=1,
-    args=["data/", "hashes/"]  # 다른 작업에 필요한 매개변수 전달
+    args=[f"{DATA_SAVE_PATH}/", f"{HASH_SAVE_PATH}/"]  # 다른 작업에 필요한 매개변수 전달
 )
 
 # 24시간 간격으로 엘라스틱에 데이터 저장

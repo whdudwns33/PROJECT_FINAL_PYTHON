@@ -5,6 +5,7 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense
 import matplotlib.pyplot as plt
 from glob import glob
+from common.constant import DATA_SAVE_PATH
 
 # 삼성 주식 예제: '005930'
 ticker = input()
@@ -13,7 +14,7 @@ ticker = input()
 # def lstm_predict(ticker) :
 # 폴더 내의 모든 csv파일 목록을 불러온다
 
-file_names = glob("../data/*/*/stock.csv")
+file_names = glob(f"{DATA_SAVE_PATH}/*/*/stock.csv")
 # print(file_names)
 
 # df_all을 데이터프레임으로 초기화

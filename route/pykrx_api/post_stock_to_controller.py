@@ -4,8 +4,9 @@ import csv
 import json
 import os
 from common.logger_config import config_logger
+from common.constant import LOGGER_PATH, SPRING_BOOT_DOMAIN
 
-logger = config_logger('logs/app.log')
+logger = config_logger(LOGGER_PATH)
 
 def csv_to_json(csv_file_path):
     # CSV 파일 열기
@@ -27,7 +28,7 @@ def csv_to_json(csv_file_path):
 
 
 def post_json(csv_file_path):
-    url = "http://localhost:8111/stock/data"
+    url = f"{SPRING_BOOT_DOMAIN}/stock/data"
     data = csv_to_json(csv_file_path)
     logger.info("post_json csv read done")
 

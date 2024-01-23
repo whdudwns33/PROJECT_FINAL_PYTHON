@@ -4,9 +4,10 @@ from calendar import monthrange
 import pandas as pd
 import os
 from common.logger_config import config_logger
+from common.constant import LOGGER_PATH, DATA_SAVE_PATH
 
 # 로거 설정
-logger = config_logger('logs/app.log')
+logger = config_logger(LOGGER_PATH)
 
 # 두 날짜 사이의 년도와 월을 가져오는 함수
 def get_years_months_between_dates(past_date):
@@ -76,7 +77,7 @@ def create_stock_files(start_date_str):
 
     for year, month in result_list:
         # 경로 설정
-        folder_path = f"data/{year}/{month:02d}"
+        folder_path = f"{DATA_SAVE_PATH}/{year}/{month:02d}"
 
         # 주식 데이터가 저장될 파일 경로를 생성합니다.
         stock_path = f"{folder_path}/stock.csv"
