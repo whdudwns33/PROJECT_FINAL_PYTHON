@@ -41,6 +41,12 @@ def save_hash_to_file(file_path, hash_value):
     with open(file_path, 'w') as hash_file:
         hash_file.write(hash_value)
 
+def get_year_month_from_file(file_path):
+    # 파일 경로에서 년과 월을 추출합니다.
+    # 예: "/some/path/2022/01/stock.csv"에서 "202201"을 추출
+    _, year, month, _ = file_path.split(os.path.sep)
+    return f"{year}{month}"
+
 
 # 주어진 디렉토리 내의 모든 CSV 파일에 대해 해시값을 체크하는 함수입니다.
 def check_all_csv_files(directory_path, hashes_directory):
@@ -62,9 +68,12 @@ def check_all_csv_files(directory_path, hashes_directory):
 
                 # 저장된 해시값이 없거나 현재 해시값과 다르면 작업을 수행합니다.
                 if last_hash is None or current_hash != last_hash:
+                    # 파일 경로에서 year_month를 추출합니다.
+                    year_month = get_year_month_from_file(file_path)
+
                     logger.info(f"hash값이 변경되었습니다! 스프링 부트에 JSON 데이터를 보냅니다... ({file_path})")
                     # 여기에 Spring Boot에 데이터를 전송하는 코드를 추가할 수 있습니다.
-                    # post_json(file_path)
+                    # post_json(file_path, year_month)
 
                     # 해시 파일을 업데이트합니다.
                     save_hash_to_file(hash_file_path, current_hash)
