@@ -1,3 +1,4 @@
+from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
@@ -41,7 +42,6 @@ app.add_url_rule('/python/oil', '/python/oil', oil_crawling, methods=['GET'])
 scheduler = APScheduler()  # 스케줄러 초기화
 scheduler.init_app(app)  # 스케줄러 초기화
 
-
 # 10분 간격으로 pykrx api 주식 데이터 수집
 scheduler.add_job(
     func=create_stock_files,
@@ -66,16 +66,13 @@ scheduler.add_job(
 # 24시간 간격으로 엘라스틱에 데이터 저장
 scheduler.add_job(
     func=get_news,
-    trigger="cron",
-    minute='*/1',
+    # trigger="cron",
     # hour='*/24',
+    trigger=IntervalTrigger(minutes=10),
     id="get_news",
     max_instances=1,
     args=[]
 )
-
-
-
 
 if __name__ == '__main__':
     if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
