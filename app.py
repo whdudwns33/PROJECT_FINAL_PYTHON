@@ -13,6 +13,10 @@ from route.stockpage_crawling.sotck_crawling import stock_crawling
 from route.stockpage_crawling.exchange_market_rate_crawling import exchange_market_crawling
 from route.stockpage_crawling.exchange_rate_crawling import exchange_crawling
 from route.stockpage_crawling.oil_price_crawling import oil_crawling
+from route.mainpage_crawling.overseas_indicators_crawling import overseas_indicators_crawling
+from route.mainpage_crawling.domestic_indicators_crawling import domestic_indicators_crawling
+from route.mainpage_crawling.majornews_crawling import majornews_crawling
+from route.mainpage_crawling.rate_crawling import rate_crawling
 from route.news import get_news
 from common.constant import DATA_SAVE_PATH, HASH_SAVE_PATH, SPRING_BOOT_DOMAIN
 import os
@@ -34,6 +38,10 @@ app.add_url_rule('/python/arg', '/python/arg', arg_crawling, methods=['GET'])
 app.add_url_rule('/python/gold', '/python/gold', gold_crawling, methods=['GET'])
 app.add_url_rule('/python/metal', '/python/metal', metal_crawling, methods=['GET'])
 app.add_url_rule('/python/oil', '/python/oil', oil_crawling, methods=['GET'])
+app.add_url_rule('/python/overseasIndicators', '/python/overseasIndicators', overseas_indicators_crawling, methods=['GET'])
+app.add_url_rule('/python/domesticIndicators', '/python/domesticIndicators', domestic_indicators_crawling, methods=['GET'])
+app.add_url_rule('/python/majornews', '/python/majornews', majornews_crawling, methods=['GET'])
+app.add_url_rule('/python/rate', '/python/rate', rate_crawling, methods=['GET'])
 # # 임시 뉴스
 # app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 
