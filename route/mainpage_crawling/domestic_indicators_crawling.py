@@ -28,7 +28,7 @@ def domestic_indicators_crawling():
 
 
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)
-    print(res)
+    # print(res)
     return res
 
 

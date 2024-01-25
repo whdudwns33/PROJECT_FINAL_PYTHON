@@ -6,6 +6,7 @@ import csv
 from glob import glob
 import requests
 from common.constant import SPRING_BOOT_DOMAIN
+
 def collect_news_to_csv():
     print("뉴스 수집 실행")
     client_id = "73M8oVppQg4z20jwcfdY"
@@ -25,22 +26,29 @@ def collect_news_to_csv():
             response_data = json.loads(response_body)
             items = response_data.get('items', [])
 
-            for item in items:
+            for index, item in enumerate(items):
                 if 'pubDate' in item and item['pubDate']:
-                    # pubDate에서 year와 month 추출
+                    # pubDate에서 year, month, day 추출
                     pub_date = datetime.datetime.strptime(item['pubDate'], '%a, %d %b %Y %H:%M:%S %z')
                     year = pub_date.strftime('%Y')
                     month = pub_date.strftime('%m')
+                    day = pub_date.strftime('%d')
                     year_month_day = pub_date.strftime('%Y%m%d')
                     item['pubDate'] = year_month_day
 
+                    # ID 값 추가 (날짜 + 인덱스 값)
+                    current_datetime = datetime.datetime.now()
+                    formatted_datetime = current_datetime.strftime('%Y%m%d%H%M%S')
+                    item['id'] = f"{formatted_datetime}_{queries.index(query)}_{index}"
+
                     # 연도와 월에 해당하는 디렉토리 생성
                     script_dir = os.path.dirname(os.path.abspath(__file__))
-                    news_data_dir = os.path.join(script_dir, '../news_data', year, month)
+                    news_data_dir = os.path.join(script_dir, '../news_data', year, month, day)
+                    # 해당 경로에 파일이 존재하면 파일을 만들지 않음
                     os.makedirs(news_data_dir, exist_ok=True)
 
                     # csv 파일 생성 및 작성
-                    news_path = os.path.join(news_data_dir, f"news.csv")
+                    news_path = os.path.join(news_data_dir, f"news_data.csv")
                     with open(news_path, 'a', newline='', encoding='utf-8') as csvfile:
                         fieldnames = item.keys()
                         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -86,7 +94,3 @@ def get_news():
 
     except Exception as e:
             print(e)
-
-
-
-
