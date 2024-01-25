@@ -4,7 +4,6 @@ from flask_apscheduler import APScheduler
 from flask_cors import CORS
 from route.pykrx_api.stock_collector import create_stock_files
 from route.pykrx_api.csv_watcher import check_all_csv_files
-
 from route.stockpage_crawling.arg_crawling import arg_crawling
 from route.stockpage_crawling.energy_crawling import energy_crawling
 from route.stockpage_crawling.gold_crawling import gold_crawling
@@ -17,7 +16,7 @@ from route.mainpage_crawling.overseas_indicators_crawling import overseas_indica
 from route.mainpage_crawling.domestic_indicators_crawling import domestic_indicators_crawling
 from route.mainpage_crawling.majornews_crawling import majornews_crawling
 from route.mainpage_crawling.rate_crawling import rate_crawling
-from route.news import get_news
+from route.news import get_news, collect_news_to_csv
 from common.constant import DATA_SAVE_PATH, HASH_SAVE_PATH, SPRING_BOOT_DOMAIN
 import os
 
@@ -71,12 +70,11 @@ scheduler.add_job(
     args=[f"{DATA_SAVE_PATH}/", f"{HASH_SAVE_PATH}/"]  # 다른 작업에 필요한 매개변수 전달
 )
 
-# 24시간 간격으로 엘라스틱에 데이터 저장
 scheduler.add_job(
     func=get_news,
     # trigger="cron",
     # hour='*/24',
-    trigger=IntervalTrigger(minutes=5),
+    trigger=IntervalTrigger(minutes=1),
     id="get_news",
     max_instances=1,
     args=[]
