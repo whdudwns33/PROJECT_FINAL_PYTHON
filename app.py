@@ -74,7 +74,7 @@ scheduler.add_job(
     func=get_news,
     # trigger="cron",
     # hour='*/24',
-    trigger=IntervalTrigger(minutes=1),
+    trigger=IntervalTrigger(minutes=240),
     id="get_news",
     max_instances=1,
     args=[]

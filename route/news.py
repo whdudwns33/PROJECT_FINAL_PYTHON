@@ -129,34 +129,34 @@ def get_news():
         news_data_dir = os.path.join(script_dir, '../news_data')
         file_names = glob(os.path.join(news_data_dir, '*/*/*/*.csv'))
 
-        # 최신 파일 선택
-        latest_file = get_latest_news_file(file_names)
-
-        if latest_file:
-            # 최신 파일의 데이터 읽기
-            news_list = read_csv_to_dict_list(latest_file)
-            # print(news_list)
-            url = f"{SPRING_BOOT_DOMAIN}/news/save"
-            response = requests.post(url, json=news_list)
-
-            if response.status_code == 200:
-                print("news sent successfully!")
-            else:
-                print(f"Failed to send news. Status code: {response.status_code}")
-                print(response.text)
-        else:
-            print("No news data found.")
-
-        # for file_name in file_names:
-        #     news_list = read_csv_to_dict_list(file_name)
-        #     all_news.extend(news_list)
+        # 최신 파일만 밀어 넣기
+        # latest_file = get_latest_news_file(file_names)
+        # if latest_file:
+        #     # 최신 파일의 데이터 읽기
+        #     news_list = read_csv_to_dict_list(latest_file)
+        #     # print(news_list)
+        #     url = f"{SPRING_BOOT_DOMAIN}/news/save"
+        #     response = requests.post(url, json=news_list)
         #
-        # response = requests.post(url, json=all_news)
-        # if response.status_code == 200:
-        #     print("news sent successfully!")
+        #     if response.status_code == 200:
+        #         print("news sent successfully!")
+        #     else:
+        #         print(f"Failed to send news. Status code: {response.status_code}")
+        #         print(response.text)
         # else:
-        #     print(f"Failed to send news. Status code: {response.status_code}")
-        #     print(response.text)
+        #     print("No news data found.")
+
+        # 전체 데이터 밀어 넣기
+        for file_name in file_names:
+            news_list = read_csv_to_dict_list(file_name)
+            all_news.extend(news_list)
+
+        response = requests.post(url, json=all_news)
+        if response.status_code == 200:
+            print("news sent successfully!")
+        else:
+            print(f"Failed to send news. Status code: {response.status_code}")
+            print(response.text)
 
     except Exception as e:
             print(e)
