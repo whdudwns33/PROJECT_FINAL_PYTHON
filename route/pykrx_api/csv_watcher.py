@@ -2,7 +2,9 @@ from common.logger_config import config_logger
 import hashlib
 import os
 from route.pykrx_api.post_stock_to_controller import post_json
-from common.constant import LOGGER_PATH
+from common.constant import LOGGER_PATH, DATA_SAVE_PATH, HASH_SAVE_PATH, PROCESS_NUMBER
+from flask import jsonify
+from datetime import datetime, timedelta
 
 # 로거 설정
 # 'logs/app.log' 파일에 로그를 기록하는 로거를 설정
@@ -23,7 +25,7 @@ def is_file_changed(file_path, last_hash):
     return current_hash != last_hash
 
 
-# 주어진 파일에 저장된 마지막 해시값을 읽어오는 함수입니다.
+# 주어진 파일에 저장된 마지막 해시파일을 읽어오는 함수입니다.
 def get_last_hash_from_file(file_path):
     try:
         with open(file_path, 'r') as hash_file:
@@ -49,31 +51,64 @@ def get_year_month_from_file(file_path):
 
 
 # 주어진 디렉토리 내의 모든 CSV 파일에 대해 해시값을 체크하는 함수입니다.
-def check_all_csv_files(directory_path, hashes_directory):
-    # 주어진 디렉토리 내의 모든 파일을 확인합니다.
-    for root, _, files in os.walk(directory_path):
-        for file_name in files:
-            # 파일 확장자가 .csv 인지 확인합니다.
-            if file_name.lower().endswith(".csv"):
-                file_path = os.path.join(root, file_name)
 
-                # 현재 파일의 해시값을 계산합니다.
-                current_hash = get_file_hash(file_path)
+def check_all_csv_files():
+    try:
+        files_processed = 0
+        num_files_to_process = PROCESS_NUMBER
 
-                # 해시 파일의 경로를 구성합니다.
-                hash_file_path = os.path.join(hashes_directory, file_path.replace(directory_path, "") + ".hash")
+        # # 현재 날짜와 이전 달 계산
+        # current_date = datetime.now()
+        # last_month = current_date - timedelta(days=current_date.day + 1)
+        #
+        # # 현재 년월 및 이전 달 년월 계산
+        # current_year_month = current_date.strftime("%Y%m")
+        # last_month_year_month = last_month.strftime("%Y%m")
 
-                # 저장된 마지막 해시값을 가져옵니다.
-                last_hash = get_last_hash_from_file(hash_file_path)
+        # 현재 년월 계산
+        current_year_month = datetime.now().strftime("%Y%m")
 
-                # 저장된 해시값이 없거나 현재 해시값과 다르면 작업을 수행합니다.
-                if last_hash is None or current_hash != last_hash:
-                    # 파일 경로에서 year_month를 추출합니다.
-                    year_month = get_year_month_from_file(file_path)
+        # 주어진 디렉토리 내의 모든 파일을 확인
+        for root, _, files in os.walk(DATA_SAVE_PATH):
+            for file_name in files:
+                # 파일 확장자가 .csv 인지 확인
+                if file_name.lower().endswith(".csv"):
+                    file_path = os.path.join(root, file_name)
 
-                    logger.info(f"hash값이 변경되었습니다! 스프링 부트에 JSON 데이터를 보냅니다... ({file_path})")
-                    # 여기에 Spring Boot에 데이터를 전송하는 코드를 추가할 수 있습니다.
-                    # post_json(file_path, year_month)
+                    # 현재 csv 파일의 해시값을 계산
+                    current_hash = get_file_hash(file_path)
+                    # 해시 파일의 경로 구성
+                    hash_relative_path = os.path.relpath(file_path, DATA_SAVE_PATH)
+                    hash_file_path = os.path.join(HASH_SAVE_PATH, f"{hash_relative_path}.hash")
 
-                    # 해시 파일을 업데이트합니다.
-                    save_hash_to_file(hash_file_path, current_hash)
+                    # 저장된 마지막 해시 파일의  해시 값 가져오기
+                    last_hash = get_last_hash_from_file(hash_file_path)
+
+                    # 저장된 해시값이 없거나 저장된 해시파일의 경로가 현재 년 월 이고 양쪽의 해시 값이 다르면 실행
+                    if last_hash is None or(get_year_month_from_file(hash_file_path) == current_year_month and current_hash != last_hash):
+
+                        # csv 파일 경로에서 year_month 추출
+                        year_month = get_year_month_from_file(file_path)
+
+                        logger.info(f"hash값이 변경되었습니다! 스프링 부트에 JSON 데이터를 보냅니다... ({file_path})")
+                        post_response = post_json(file_path, year_month)
+                        if post_response:
+                            # 해시 파일 업데이트
+                            save_hash_to_file(hash_file_path, current_hash)
+                            files_processed += 1
+                        else:
+                            logger.error("Spring Boot에 Json 보내기 실패")
+                            break
+
+                        # 지정한 횟수만큼 파일 처리했으면 종료
+                        if files_processed >= num_files_to_process:
+                            break
+
+            # 지정한 횟수만큼 파일 처리했으면 종료
+            if files_processed >= num_files_to_process:
+                break
+
+        return jsonify({"/python/stock/pull": f"Success. Processed {files_processed} files"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

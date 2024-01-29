@@ -4,10 +4,10 @@ from calendar import monthrange
 import pandas as pd
 import os
 from common.logger_config import config_logger
-from common.constant import LOGGER_PATH, DATA_SAVE_PATH
+from common.constant import PYKRX_LOGGER_PATH, DATA_SAVE_PATH
 
 # 로거 설정
-logger = config_logger(LOGGER_PATH)
+logger = config_logger(PYKRX_LOGGER_PATH)
 
 # 두 날짜 사이의 년도와 월을 가져오는 함수
 def get_years_months_between_dates(past_date):
@@ -68,29 +68,30 @@ def make_stock_csv_file(start, end, folder_path):
 
 # 시작 날짜를 입력받아 해당 날짜부터 현재까지의 주식 데이터를 생성하는 함수
 def create_stock_files(start_date_str):
-    # 시작 날짜 문자열을 datetime 객체로 변환
-    start_date = datetime.strptime(start_date_str, "%Y%m%d")
+    try:
+        # 시작 날짜 문자열을 datetime 객체로 변환
+        start_date = datetime.strptime(start_date_str, "%Y%m%d")
 
-    # 함수를 호출하여 년과 월이 포함된 리스트를 얻습니다.
-    result_list = get_years_months_between_dates(start_date)
+        # 함수를 호출하여 년과 월이 포함된 리스트를 얻습니다.
+        result_list = get_years_months_between_dates(start_date)
 
+        for year, month in result_list:
+            # 경로 설정
+            folder_path = f"{DATA_SAVE_PATH}/{year}/{month:02d}"
 
-    for year, month in result_list:
-        # 경로 설정
-        folder_path = f"{DATA_SAVE_PATH}/{year}/{month:02d}"
+            # 주식 데이터가 저장될 파일 경로를 생성합니다.
+            stock_path = f"{folder_path}/stock.csv"
 
-        # 주식 데이터가 저장될 파일 경로를 생성합니다.
-        stock_path = f"{folder_path}/stock.csv"
+            # 설정 경로에 파일 생성
+            os.makedirs(folder_path, exist_ok=True)
 
-        # 설정 경로에 파일 생성
-        os.makedirs(folder_path, exist_ok=True)
-
-        # stock.csv 파일이 존재하지 않거나, result_list의 마지막 튜플인 경우
-        if not os.path.exists(stock_path) or (year, month) == result_list[-1]:
-            # 현재 연도와 월에 해당하는 주식 데이터를 생성하는 함수를 호출하여 파일을 만듭니다.
-            first_date, last_date = get_first_and_last_day(year, month)
-            make_stock_csv_file(first_date.strftime('%Y%m%d'), last_date.strftime('%Y%m%d'), folder_path)
-        else:
-            # stock.csv 파일이 이미 존재하는 경우 로그를 출력합니다.
-            logger.info(f'"{stock_path}" 파일이 이미 존재합니다.')
-
+            # stock.csv 파일이 존재하지 않거나, result_list의 마지막 튜플인 경우
+            if not os.path.exists(stock_path) or (year, month) == result_list[-1]:
+                # 현재 연도와 월에 해당하는 주식 데이터를 생성하는 함수를 호출하여 파일을 만듭니다.
+                first_date, last_date = get_first_and_last_day(year, month)
+                make_stock_csv_file(first_date.strftime('%Y%m%d'), last_date.strftime('%Y%m%d'), folder_path)
+            # else:
+            #     # stock.csv 파일이 이미 존재하는 경우 로그를 출력합니다.
+            #     logger.info(f'"{stock_path}" 파일이 이미 존재합니다.')
+    except Exception as e:
+        logger.error(f"create_stock_files 함수에서 오류 발생: {e}")

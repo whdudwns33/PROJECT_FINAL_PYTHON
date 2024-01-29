@@ -37,10 +37,14 @@ def post_json(csv_file_path, year_month):
         http_post_request = requests.post(url, data=data.encode('utf-8'), headers={'Content-Type': 'application/json'})
 
         if http_post_request.status_code == 200:
-            logger.info("POST 요청 성공")
-            print(http_post_request.text)  # 서버에서 보낸 응답 확인
+            logger.info(f"{url} POST 요청 성공")
+            # print(http_post_request.text)  # 서버에서 보낸 응답 확인
+            return True
         else:
             logger.error(f"POST 요청 실패. 응답 코드: {http_post_request.status_code}")
-            print(http_post_request.text)  # 실패 시 에러 메시지 확인
+            # print(http_post_request.text)  # 실패 시 에러 메시지 확인
+            return False
+        return http_post_request.status_code
     except requests.exceptions.ConnectionError as e:
         logger.error(f"ConnectionError: {e}")
+        return False

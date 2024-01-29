@@ -41,6 +41,7 @@ app.add_url_rule('/python/overseasIndicators', '/python/overseasIndicators', ove
 app.add_url_rule('/python/domesticIndicators', '/python/domesticIndicators', domestic_indicators_crawling, methods=['GET'])
 app.add_url_rule('/python/majornews', '/python/majornews', majornews_crawling, methods=['GET'])
 app.add_url_rule('/python/rate', '/python/rate', rate_crawling, methods=['GET'])
+app.add_url_rule('/python/stock/pull', '/python/stock/pull', check_all_csv_files, methods=['GET'])
 # # 임시 뉴스
 # app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 
@@ -53,21 +54,11 @@ scheduler.init_app(app)  # 스케줄러 초기화
 scheduler.add_job(
     func=create_stock_files,
     trigger="cron",
-    minute='*/10',
+    minute='*/1',
     # hour='*/1',
     id="get_stock_files",
     max_instances=1,
     args=["20230101"]  # 여기에 원하는 날짜 범위를 설정
-)
-
-# 1분 간격으로 csv파일 내용 변경 체크
-scheduler.add_job(
-    func=check_all_csv_files,
-    trigger="cron",
-    minute='*/1',
-    id="check_stock_files",
-    max_instances=1,
-    args=[f"{DATA_SAVE_PATH}/", f"{HASH_SAVE_PATH}/"]  # 다른 작업에 필요한 매개변수 전달
 )
 
 scheduler.add_job(
@@ -84,3 +75,5 @@ if __name__ == '__main__':
     if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
         scheduler.start()
     app.run(debug=True)
+
+

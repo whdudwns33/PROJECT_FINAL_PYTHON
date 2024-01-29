@@ -13,7 +13,7 @@ def config_logger(log_file):
     file_handler.setFormatter(formatter)
 
     # 로거 설정
-    logger = logging.getLogger()  # 로거 이름을 지정
+    logger = logging.getLogger(log_file)  # 로거 이름을 지정
     logger.setLevel(logging.INFO)
 
     # 기존에 설정된 핸들러가 있다면 중복 추가하지 않도록 체크
