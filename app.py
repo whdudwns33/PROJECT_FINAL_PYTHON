@@ -58,14 +58,14 @@ scheduler.add_job(
     # hour='*/1',
     id="get_stock_files",
     max_instances=1,
-    args=["20230101"]  # 여기에 원하는 날짜 범위를 설정
+    args=["20180101"]  # 여기에 원하는 날짜 범위를 설정
 )
 
 scheduler.add_job(
     func=get_news,
     # trigger="cron",
     # hour='*/24',
-    trigger=IntervalTrigger(minutes=240),
+    trigger=IntervalTrigger(minutes=120),
     id="get_news",
     max_instances=1,
     args=[]

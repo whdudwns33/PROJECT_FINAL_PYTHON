@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
-import matplotlib.pyplot as plt
 from glob import glob
 from common.constant import DATA_SAVE_PATH
 
@@ -14,8 +13,8 @@ ticker = input()
 # def lstm_predict(ticker) :
 # 폴더 내의 모든 csv파일 목록을 불러온다
 
-file_names = glob(f"{DATA_SAVE_PATH}/*/*/stock.csv")
-# print(file_names)
+file_names = glob(f"../../{DATA_SAVE_PATH}/*/*/stock.csv")
+print(file_names)
 
 # df_all을 데이터프레임으로 초기화
 df_all = pd.DataFrame()
@@ -31,10 +30,10 @@ data = df_all['종가'].values.reshape(-1, 1)
 # print("data",data)
 
 # 데이터의 총 수 - 1 : 현제 기(term)에서 몇 전기 까지 볼껀지
-# 0.88가 가장 적절한 수준인듯
-length = int(len(data) * 0.88)
+length = int(len(data) * 0.96)
 # length = 180
-# print("length",length)
+print("length",length)
+print("Number of rows in df_all:", len(df_all))
 
 
 # 데이터 정규화
@@ -63,11 +62,15 @@ x_train, y_train = np.array(x_train), np.array(y_train)
 x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
 
 # LSTM 모델 생성
+# Sequential() : 선형 모델 선언
+# LSTM, Dense 레이어는 너무 많으면 과적합 문제가 발생
 model = Sequential()
 model.add(LSTM(units=50, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+model.add(LSTM(units=50, return_sequences=True))
 model.add(LSTM(units=50, return_sequences=False))
 model.add(Dense(units=25))
 model.add(Dense(units=1))
+# 평균 제곱 오차(MSE로 SSR과 비슷하지만 다른 개념) : 0에 가까울 수록 설명력이 높음. R^2랑 다른 것.
 model.compile(optimizer='adam', loss='mean_squared_error')
 
 # 모델 학습
@@ -109,27 +112,3 @@ future_predictions = scaler.inverse_transform(future_predictions)
 
 # 미래 예측값 출력
 print("Future Predictions:", future_predictions[0:5])
-
-
-
-# # Plot the results
-# # 학습용 80%
-# train = df_all[:train_size]
-# # 검증용 20%
-# valid = df_all[train_size:]
-# valid['Predictions'] = predictions
-# # print("",valid['Predictions'])
-#
-# plt.figure(figsize=(100, 8))
-# plt.title('Stock Price Prediction using LSTM')
-# plt.xlabel('Date')
-# plt.ylabel('Closing Price (KRW)')
-# plt.xticks(np.arange(0, len(valid['날짜']), step=10), rotation=45)
-# plt.plot(train['날짜'], train['종가'], label='Train')
-# # 검증 데이터 Validation, 사용되지 않은 20%
-# plt.plot(valid['날짜'], valid['종가'], label='Validation')
-# # 예측 데이터 Predictions
-# plt.plot(valid['날짜'], valid['Predictions'], label='Predictions')
-# plt.legend(loc='lower right')
-# plt.show()
-# # 사용되지 않은 20%와 예측 데이터를 비교하는 그래프
