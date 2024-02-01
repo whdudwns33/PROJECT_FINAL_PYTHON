@@ -14,7 +14,7 @@
 from common.logger_config import config_logger
 import hashlib
 import os
-from route.pykrx_api.post_stock_to_controller import post_json
+from route.stock_pull.post_stock_to_controller import post_json
 from common.constant import LOGGER_PATH, DATA_SAVE_PATH, HASH_SAVE_PATH, PROCESS_NUMBER
 from flask import jsonify
 from datetime import datetime, timedelta

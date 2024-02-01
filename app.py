@@ -3,7 +3,7 @@ from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 from scheduler.pykrx.stock_collector import create_stock_files
-from route.pykrx_api.csv_watcher import check_all_csv_files
+from route.stock_pull.csv_watcher import check_all_csv_files
 from route.stockpage_crawling.arg_crawling import arg_crawling
 from route.stockpage_crawling.energy_crawling import energy_crawling
 from route.stockpage_crawling.gold_crawling import gold_crawling
@@ -54,8 +54,8 @@ scheduler.init_app(app)  # 스케줄러 초기화
 scheduler.add_job(
     func=create_stock_files,
     trigger="cron",
-    # minute='*/1',
-    hour='*/1',
+    minute='*/1',
+    # hour='*/1',
     id="get_stock_files",
     max_instances=1,
     args=["20230101"]  # 여기에 원하는 날짜 범위를 설정

@@ -8,7 +8,7 @@ LOGGER_PATH = "logs/app.log"
 
 PYKRX_LOGGER_PATH = "logs/pykrx.log"
 
-# pykrx_api  -------------------------------------------------
+# stock_pull  -------------------------------------------------
 
 # .csv 파일 저장 경로
 DATA_SAVE_PATH = "data"
