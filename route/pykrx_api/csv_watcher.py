@@ -1,3 +1,16 @@
+# Spring Boot에서 Flask의 "http://localhost:5000/python/stock/pull" 경로의 route로 GET 요청이 오면 동작
+
+# Flask의 data/ 하위 경로에 모든 .csv 파일을 탐색
+
+# .csv 내용의 hash 값 계산을 해서 과거에 만든 hash 값과 비교
+# hash 값이 서로 다르거나, hashes/ 에 저장 된 이전 hash 파일이 없으면
+# 신규 데이터이거나, 내용이 변경된 .csv 이라고 판단해서 Spring Boot로 POST
+
+# check_all_csv_files()에서 PROCESS_NUMBER 수 만큼의 .csv 파일들을 json화 해서 Spring Boot의 컨트롤러로 POST 요청
+# PROCESS_NUMBER는 common/constant.py 에 선언 된 상수
+
+# POST 응답 state가 200이면 Spring Boot에서 정상적으로 동작 한 것이므로, 새로운 stock.csv.hash 파일을 생성
+
 from common.logger_config import config_logger
 import hashlib
 import os
@@ -91,6 +104,8 @@ def check_all_csv_files():
                         year_month = get_year_month_from_file(file_path)
 
                         logger.info(f"hash값이 변경되었습니다! 스프링 부트에 JSON 데이터를 보냅니다... ({file_path})")
+
+                        # Spring Boot의 컨트롤러로 POST요청
                         post_response = post_json(file_path, year_month)
                         if post_response:
                             # 해시 파일 업데이트

@@ -46,7 +46,7 @@ def collect_news_to_csv():
 
                         # 연도와 월, 일에 해당하는 디렉토리 생성
                         script_dir = os.path.dirname(os.path.abspath(__file__))
-                        news_data_dir = os.path.join(script_dir, '../news_data', year, month, day)
+                        news_data_dir = os.path.join(script_dir, '../../news_data', year, month, day)
 
                         # 해당 경로에 파일이 존재하지 않으면 csv 파일 생성
                         news_path = os.path.join(news_data_dir, f"news_data.csv")
@@ -126,7 +126,7 @@ def get_news():
         url = f"{SPRING_BOOT_DOMAIN}/news/save"
         all_news = []
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        news_data_dir = os.path.join(script_dir, '../news_data')
+        news_data_dir = os.path.join(script_dir, '../../news_data')
         file_names = glob(os.path.join(news_data_dir, '*/*/*/*.csv'))
 
         # 최신 파일만 밀어 넣기

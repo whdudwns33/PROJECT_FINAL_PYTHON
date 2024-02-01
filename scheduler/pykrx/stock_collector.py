@@ -1,3 +1,5 @@
+# 스케줄러에 등록하여 stock.csv를 생성하는 스크립트
+
 from pykrx import stock
 from datetime import datetime
 from calendar import monthrange

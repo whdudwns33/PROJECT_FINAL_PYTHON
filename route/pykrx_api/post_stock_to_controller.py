@@ -1,8 +1,8 @@
-# 월 단위로 json 데이터를 읽어서 spring boot로 보내는 함수 (file_path)
+# stock.csv파일을 읽어서 spring boot로 json 데이터를 보내는 함수 (file_path)
+# Spring Boot의 컨트롤러로 POST 요청
 import requests
 import csv
 import json
-import os
 from common.logger_config import config_logger
 from common.constant import LOGGER_PATH, SPRING_BOOT_DOMAIN
 
