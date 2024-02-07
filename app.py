@@ -2,6 +2,8 @@ from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
+
+from route.stockpage_crawling.search_rank import search_rank_crawling
 from scheduler.pykrx.stock_collector import create_stock_files
 from route.stock_pull.csv_watcher import check_all_csv_files
 from route.stockpage_crawling.arg_crawling import arg_crawling
@@ -37,11 +39,13 @@ app.add_url_rule('/python/arg', '/python/arg', arg_crawling, methods=['GET'])
 app.add_url_rule('/python/gold', '/python/gold', gold_crawling, methods=['GET'])
 app.add_url_rule('/python/metal', '/python/metal', metal_crawling, methods=['GET'])
 app.add_url_rule('/python/oil', '/python/oil', oil_crawling, methods=['GET'])
+app.add_url_rule('/python/search', '/python/search', search_rank_crawling, methods=['GET'])
 app.add_url_rule('/python/overseasIndicators', '/python/overseasIndicators', overseas_indicators_crawling, methods=['GET'])
 app.add_url_rule('/python/domesticIndicators', '/python/domesticIndicators', domestic_indicators_crawling, methods=['GET'])
 app.add_url_rule('/python/majornews', '/python/majornews', majornews_crawling, methods=['GET'])
 app.add_url_rule('/python/rate', '/python/rate', rate_crawling, methods=['GET'])
 app.add_url_rule('/python/stock/pull', '/python/stock/pull', check_all_csv_files, methods=['GET'])
+
 # # 임시 뉴스
 # app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 

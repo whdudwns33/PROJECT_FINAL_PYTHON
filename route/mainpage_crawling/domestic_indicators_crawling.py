@@ -23,7 +23,7 @@ def domestic_indicators_crawling():
         # changepoint = change_info.find("span", {"class": ["nup", "ndown"]}).text
         # changestatus = change.find("span", {"class": "blind"}).text
 
-        dic = {"name": name, "price": price, "changepoint": change_info}
+        dic = {"crawlDomesticIndicatorsName": name, "crawlDomesticIndicatorsPrice": price, "crawlDomesticIndicatorsChange": change_info}
         dic_list.append(dic)
 
 
@@ -32,4 +32,4 @@ def domestic_indicators_crawling():
     return res
 
 
-domestic_indicators_crawling()
+# domestic_indicators_crawling()

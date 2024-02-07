@@ -11,7 +11,7 @@ logs/
 hashes/
 
 # test 는 개인용
-test.py
+route/learning/test.py
 
 # etc
 __pycache__/

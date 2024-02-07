@@ -4,6 +4,7 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from glob import glob
+# csv 파일 읽어오는 Path
 from common.constant import DATA_SAVE_PATH
 
 # 삼성 주식 예제: '005930'
