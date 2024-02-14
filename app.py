@@ -1,5 +1,5 @@
 from apscheduler.triggers.interval import IntervalTrigger
-from flask import Flask
+from flask import Flask, request, jsonify
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
@@ -18,6 +18,7 @@ from route.mainpage_crawling.overseas_indicators_crawling import overseas_indica
 from route.mainpage_crawling.domestic_indicators_crawling import domestic_indicators_crawling
 from route.mainpage_crawling.majornews_crawling import majornews_crawling
 from route.mainpage_crawling.rate_crawling import rate_crawling
+from route.learning.arima import get_arima
 from scheduler.news.news import get_news
 from common.constant import SPRING_BOOT_DOMAIN
 import os
@@ -49,6 +50,21 @@ app.add_url_rule('/python/stock/pull', '/python/stock/pull', check_all_csv_files
 # # 임시 뉴스
 # app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 
+# Spring Boot에서 Arima 데이터 POST요청
+@app.route('/python/arima', methods=['POST'])
+def arima_route():
+    data = request.get_json()
+    stock_code = data.get('stock_code')
+    start_date = data.get('start_date')
+    end_date = data.get('end_date')
+    column_type = data.get('column_type')
+    future_days = int(data.get('future_days', 0))
+
+    print(stock_code, start_date, end_date, column_type, future_days)
+
+    result = get_arima(stock_code, start_date, end_date, column_type, future_days)
+
+    return jsonify(result)
 
 
 scheduler = APScheduler()  # 스케줄러 초기화
