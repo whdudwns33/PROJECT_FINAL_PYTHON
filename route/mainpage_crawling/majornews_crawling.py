@@ -34,4 +34,4 @@ def majornews_crawling():
     return news_data
 
 # majornews_crawling()
-# print(majornews_crawling())
+print(majornews_crawling())
