@@ -3,6 +3,9 @@ from flask import Flask, request, jsonify
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
 
+from route.newpage_crawling.many_crawling import many_crawling
+from route.newpage_crawling.real_time_crawling import real_time_crawling
+from route.newpage_crawling.tv_crawling import tv_crawling
 from route.stockpage_crawling.search_rank import search_rank_crawling
 from scheduler.pykrx.stock_collector import create_stock_files
 from route.stock_pull.csv_watcher import check_all_csv_files
@@ -44,6 +47,10 @@ app.add_url_rule('/python/search', '/python/search', search_rank_crawling, metho
 app.add_url_rule('/python/overseasIndicators', '/python/overseasIndicators', overseas_indicators_crawling, methods=['GET'])
 app.add_url_rule('/python/domesticIndicators', '/python/domesticIndicators', domestic_indicators_crawling, methods=['GET'])
 app.add_url_rule('/python/majornews', '/python/majornews', majornews_crawling, methods=['GET'])
+app.add_url_rule('/python/manynews', '/python/manynews', many_crawling, methods=['GET'])
+app.add_url_rule('/python/tvnews', '/python/tvnews', tv_crawling, methods=['GET'])
+app.add_url_rule('/python/rtnews', '/python/rtnews', real_time_crawling, methods=['GET'])
+
 app.add_url_rule('/python/rate', '/python/rate', rate_crawling, methods=['GET'])
 app.add_url_rule('/python/stock/pull', '/python/stock/pull', check_all_csv_files, methods=['GET'])
 

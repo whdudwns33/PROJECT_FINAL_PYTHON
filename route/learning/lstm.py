@@ -31,8 +31,7 @@ data = df_all['종가'].values.reshape(-1, 1)
 # print("data",data)
 
 # 데이터의 총 수 - 1 : 현제 기(term)에서 몇 전기 까지 볼껀지
-length = int(len(data) * 0.96)
-# length = 180
+length = int(len(data) * 0.86)
 print("length",length)
 print("Number of rows in df_all:", len(df_all))
 

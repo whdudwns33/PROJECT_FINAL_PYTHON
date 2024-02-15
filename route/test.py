@@ -1,3 +1,3 @@
-from route.news import get_news
+from route.newpage_crawling.many_crawling import many_crawling
 
-get_news()
+many_crawling()
