@@ -31,3 +31,5 @@ def stock_crawling():
     # print(data_list)
     res = json.dumps(data_list, ensure_ascii=False, indent=4)
     return res
+
+# stock_crawling()

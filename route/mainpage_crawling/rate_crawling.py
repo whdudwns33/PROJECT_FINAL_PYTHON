@@ -20,10 +20,12 @@ def rate_crawling():
     dic_list = []
     for tr in tr_list:
         name = tr.find("th").text.strip()
-        interest_rate = tr.find_all("td")[0].text
-        change = tr.find_all("td")[1].text
+        interestRate = tr.find_all("td")[0].text
+        change_direction = tr.find("img")['alt']
+        change_value = tr.find_all("td")[1].text.strip()
 
-        dic = {"name": name, "interest_rate": interest_rate, "change": change}
+        change = change_direction + ' ' + change_value
+        dic = {"name": name, "interestRate": interestRate, "change": change}
         dic_list.append(dic)
 
     print(dic_list)
