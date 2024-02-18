@@ -21,7 +21,7 @@ def overseas_indicators_crawling():
         dic = {"name": name, "price": price, "change": change}
         dic_list.append(dic)
 
-    print(dic_list)
+    # print(dic_list)
     res = json.dumps(dic_list, ensure_ascii=False, indent=4)
     return res
 

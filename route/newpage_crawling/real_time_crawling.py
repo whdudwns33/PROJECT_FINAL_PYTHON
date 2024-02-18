@@ -14,7 +14,7 @@ def real_time_crawling():
 
     res = []
     for dd in dds:
-        dda = li.find("a")
+        dda = dd.find("a")
         if dda:
             text = dd.text.strip().replace('\n', '').strip().replace('\t', '')
             href = dda.get("href")

@@ -1,8 +1,8 @@
+#  app.py
 from apscheduler.triggers.interval import IntervalTrigger
 from flask import Flask, request, jsonify
 from flask_apscheduler import APScheduler
 from flask_cors import CORS
-
 from route.newpage_crawling.many_crawling import many_crawling
 from route.newpage_crawling.real_time_crawling import real_time_crawling
 from route.newpage_crawling.tv_crawling import tv_crawling
@@ -54,8 +54,6 @@ app.add_url_rule('/python/rtnews', '/python/rtnews', real_time_crawling, methods
 app.add_url_rule('/python/rate', '/python/rate', rate_crawling, methods=['GET'])
 app.add_url_rule('/python/stock/pull', '/python/stock/pull', check_all_csv_files, methods=['GET'])
 
-# # 임시 뉴스
-# app.add_url_rule('/python/elastic/news', '/python/elastic/news', get_news, methods=['GET'])
 
 # Spring Boot에서 Arima 데이터 POST요청
 @app.route('/python/arima', methods=['POST'])
@@ -92,7 +90,7 @@ scheduler.add_job(
     func=get_news,
     # trigger="cron",
     # hour='*/24',
-    trigger=IntervalTrigger(minutes=120),
+    trigger=IntervalTrigger(minutes=30),
     id="get_news",
     max_instances=1,
     args=[]

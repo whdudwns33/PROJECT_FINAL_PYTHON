@@ -27,7 +27,7 @@ def hotranking_crawling():
     #     dic_list.append(dic)
     #
     # res = json.dumps(dic_list, ensure_ascii=False, indent=4)
-    print(li_list)
+    # print(li_list)
     # return res
 
 hotranking_crawling()
